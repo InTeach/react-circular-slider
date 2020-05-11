@@ -1,103 +1,103 @@
-import React  from 'react';
-import PropTypes from 'prop-types';
-import './index.css'
+import React from "react";
+import PropTypes from "prop-types";
+import "./index.css";
 
 const Knob = ({
-	isDragging,
-	knobPosition,
-	knobColor,
-	knobRadius = 12,
-	knobSize = 36,
-	hideKnob,
-	onMouseDown,
-	trackSize,
-	children,
+  isDragging,
+  knobPosition,
+  knobColor,
+  knobRadius = 12,
+  knobSize = 36,
+  hideKnob,
+  onMouseDown,
+  trackSize,
+  children,
 }) => {
-	const styles = {
-		knob: {
-			position: 'absolute',
-			left: `-${knobSize / 2 - trackSize / 2}px`,
-			top: `-${knobSize / 2 - trackSize / 2}px`,
-			cursor: 'grab',
-			zIndex: 3,
-		},
+  const styles = {
+    knob: {
+      position: "absolute",
+      left: `-${knobSize / 2 - trackSize / 2}px`,
+      top: `-${knobSize / 2 - trackSize / 2}px`,
+      cursor: "grab",
+      zIndex: 3,
+    },
 
-		dragging: {
-			cursor: 'grabbing',
-		},
+    dragging: {
+      cursor: "grabbing",
+    },
 
-		pause: {
-			animationPlayState: 'paused',
-		},
+    pause: {
+      animationPlayState: "paused",
+    },
 
-		animation: {
-			transformOrigin: '50% 50%',
-			animationTimingFunction: 'ease-out',
-			animation: 'pulse 1500ms infinite',
-		},
+    animation: {
+      transformOrigin: "50% 50%",
+      animationTimingFunction: "ease-out",
+      animation: "pulse 1500ms infinite",
+    },
 
-		hide: {
-			opacity: 0
-		}
-	};
+    hide: {
+      opacity: 0,
+    },
+  };
 
-	const defaultKnobIcon = () => {
-		return (
-			<>
-				<rect fill='#FFFFFF' x='14' y='14' width='8' height='1' />
-				<rect fill='#FFFFFF' x='14' y='17' width='8' height='1' />
-				<rect fill='#FFFFFF' x='14' y='20' width='8' height='1' />
-			</>
-		);
-	};
+  const defaultKnobIcon = () => {
+    return (
+      <>
+        <rect fill="#FFFFFF" x="14" y="14" width="8" height="1" />
+        <rect fill="#FFFFFF" x="14" y="17" width="8" height="1" />
+        <rect fill="#FFFFFF" x="14" y="20" width="8" height="1" />
+      </>
+    );
+  };
 
-	const customKnobIcon = () => children;
+  const customKnobIcon = () => children;
 
-	return (
-		<div
-			style={{
-				transform: `translate(${knobPosition.x}px, ${knobPosition.y}px)`,
-				...styles.knob,
-				...(isDragging && styles.dragging),
-				...(hideKnob && styles.hide),
-			}}
-			onMouseDown={onMouseDown}
-			onTouchStart={onMouseDown}>
-			<svg
-				width={`${knobSize}px`}
-				height={`${knobSize}px`}
-				viewBox={`0 0 ${knobSize} ${knobSize}`}>
-				<circle
-					style={{ ...styles.animation, ...(isDragging && styles.pause) }}
-					fill={knobColor}
-					fillOpacity='0.2'
-					stroke='none'
-					cx={knobSize / 2}
-					cy={knobSize / 2}
-					r={knobSize / 2}
-				/>
-				<circle
-					fill={knobColor}
-					stroke='none'
-					cx={knobSize / 2}
-					cy={knobSize / 2}
-					r={knobRadius}
-				/>
-				{children ? customKnobIcon() : defaultKnobIcon()}
-			</svg>
-		</div>
-	);
+  return (
+    <div
+      style={{
+        transform: `translate(${knobPosition.x}px, ${knobPosition.y}px)`,
+        ...styles.knob,
+        ...(isDragging && styles.dragging),
+        ...(hideKnob && styles.hide),
+      }}
+      onMouseDown={onMouseDown}
+      onTouchStart={onMouseDown}>
+      <svg
+        width={`${knobSize}px`}
+        height={`${knobSize}px`}
+        viewBox={`0 0 ${knobSize} ${knobSize}`}>
+        <circle
+          style={{ ...styles.animation, ...(isDragging && styles.pause) }}
+          fill={knobColor}
+          fillOpacity="0.2"
+          stroke="none"
+          cx={knobSize / 2}
+          cy={knobSize / 2}
+          r={knobSize / 2}
+        />
+        <circle
+          fill={knobColor}
+          stroke="none"
+          cx={knobSize / 2}
+          cy={knobSize / 2}
+          r={knobRadius}
+        />
+        {children ? customKnobIcon() : defaultKnobIcon()}
+      </svg>
+    </div>
+  );
 };
 
 Knob.propTypes = {
-	isDragging: PropTypes.bool,
-	knobPosition: PropTypes.object,
-	knobColor: PropTypes.string,
-	knobRadius: PropTypes.number,
-	knobSize: PropTypes.number,
-	trackSize: PropTypes.number,
-	children: PropTypes.element,
-	onMouseDown: PropTypes.func,
+  isDragging: PropTypes.bool,
+  knobPosition: PropTypes.object,
+  knobColor: PropTypes.string,
+  knobRadius: PropTypes.number,
+  knobSize: PropTypes.number,
+  trackSize: PropTypes.number,
+  children: PropTypes.element,
+  onMouseDown: PropTypes.func,
 };
 
 export default Knob;
