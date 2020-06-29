@@ -175,6 +175,7 @@ const CircularSlider = ({
       if (!state.isDragging) return;
 
       event.preventDefault();
+      event.stopPropagation();
 
       let touch;
       if (event.type === "touchmove") {
