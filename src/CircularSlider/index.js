@@ -1,35 +1,12 @@
 import React, { useEffect, useReducer, useCallback, useRef } from "react";
+import window from "global";
 import PropTypes from "prop-types";
 import reducer from "../redux/reducer";
-import useEventListener from "./useEventListener";
+import useEventListener from "../hooks/useEventListener";
+import useIsServer from "../hooks/useIsServer";
 import Knob from "../Knob";
 import Labels from "../Labels";
 import Svg from "../Svg";
-
-// mock window object for SSR
-let winObj = {
-  pageXOffset: 0,
-  pageYOffset: 0,
-};
-
-let docObj = {
-  documentElement: {
-    scrollLeft: 0,
-    scrollTop: 0,
-  },
-};
-
-if (typeof window !== "undefined") {
-  winObj = window;
-  docObj = document;
-}
-
-const touchSupported = "ontouchstart" in winObj;
-const SLIDER_EVENT = {
-  DOWN: touchSupported ? "touchstart" : "mousedown",
-  UP: touchSupported ? "touchend" : "mouseup",
-  MOVE: touchSupported ? "touchmove" : "mousemove",
-};
 
 const spreadDegrees = 360;
 const knobOffset = {
@@ -54,13 +31,6 @@ const generateRange = (min, max) => {
     rangeOfNumbers.push(i);
   }
   return rangeOfNumbers;
-};
-
-const offsetRelativeToDocument = (ref) => {
-  const rect = ref.current.getBoundingClientRect();
-  const scrollLeft = winObj.pageXOffset || docObj.documentElement.scrollLeft;
-  const scrollTop = winObj.pageYOffset || docObj.documentElement.scrollTop;
-  return { top: rect.top + scrollTop, left: rect.left + scrollLeft };
 };
 
 const styles = {
@@ -123,10 +93,16 @@ const CircularSlider = ({
     dashFullArray: 0,
     dashFullOffset: 0,
   };
-
+  const isServer = useIsServer();
   const [state, dispatch] = useReducer(reducer, initialState);
   const circularSlider = useRef(null);
   const svgFullPath = useRef(null);
+  const touchSupported = !isServer && "ontouchstart" in window;
+  const SLIDER_EVENT = {
+    DOWN: touchSupported ? "touchstart" : "mousedown",
+    UP: touchSupported ? "touchend" : "mouseup",
+    MOVE: touchSupported ? "touchmove" : "mousemove",
+  };
 
   const setKnobPosition = useCallback(
     (radians) => {
@@ -175,13 +151,7 @@ const CircularSlider = ({
     ]
   );
 
-  const pauseEvent = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-  };
-
-  const onMouseDown = (event) => {
-    pauseEvent(event);
+  const onMouseDown = () => {
     dispatch({
       type: "onMouseDown",
       payload: {
@@ -201,13 +171,27 @@ const CircularSlider = ({
 
   const onMouseMove = useCallback(
     (event) => {
-      pauseEvent(event);
       if (!state.isDragging) return;
+
+      event.preventDefault();
 
       let touch;
       if (event.type === "touchmove") {
         touch = event.changedTouches[0];
       }
+
+      const offsetRelativeToDocument = (ref) => {
+        const rect = ref.current.getBoundingClientRect();
+        const scrollLeft =
+          !isServer &&
+          ((window?.pageXOffset ?? 0) ||
+            (document?.documentElement?.scrollLeft ?? 0));
+        const scrollTop =
+          !isServer &&
+          ((window?.pageYOffset ?? 0) ||
+            (document?.documentElement?.scrollTop ?? 0));
+        return { top: rect.top + scrollTop, left: rect.left + scrollLeft };
+      };
 
       const mouseXFromCenter =
         (event.type === "touchmove" ? touch.pageX : event.pageX) -
@@ -219,7 +203,7 @@ const CircularSlider = ({
       const radians = Math.atan2(mouseYFromCenter, mouseXFromCenter);
       setKnobPosition(radians);
     },
-    [state.isDragging, state.radius, setKnobPosition]
+    [state.isDragging, state.radius, setKnobPosition, isServer]
   );
 
   // Get svg path length onmount
