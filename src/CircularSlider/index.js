@@ -152,7 +152,13 @@ const CircularSlider = ({
     ]
   );
 
-  const onMouseDown = () => {
+  const pauseEvent = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
+  const onMouseDown = (event) => {
+    pauseEvent(event);
     dispatch({
       type: "onMouseDown",
       payload: {
@@ -174,8 +180,7 @@ const CircularSlider = ({
     (event) => {
       if (!state.isDragging) return;
 
-      event.preventDefault();
-      event.stopPropagation();
+      pauseEvent(event);
 
       let touch;
       if (event.type === "touchmove") {
