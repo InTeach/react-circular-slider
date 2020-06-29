@@ -75,6 +75,7 @@ const CircularSlider = ({
   renderLabelValue = null,
   children,
   onChange = (value) => {},
+  eventRef,
 }) => {
   const initialState = {
     mounted: false,
@@ -263,8 +264,8 @@ const CircularSlider = ({
     direction,
   ]);
 
-  useEventListener(SLIDER_EVENT.MOVE, onMouseMove);
-  useEventListener(SLIDER_EVENT.UP, onMouseUp);
+  useEventListener(SLIDER_EVENT.MOVE, onMouseMove, eventRef);
+  useEventListener(SLIDER_EVENT.UP, onMouseUp, eventRef);
 
   return (
     <div
