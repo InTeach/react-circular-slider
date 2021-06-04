@@ -38,6 +38,20 @@ const Labels = ({
       marginBottom: `calc(${verticalOffset})`,
     },
 
+    appended: {
+      position: "absolute",
+      right: "0",
+      top: "0",
+      transform: "translate(100%, 0)",
+    },
+
+    prepended: {
+      position: "absolute",
+      left: "0",
+      top: "0",
+      transform: "translate(-100%, 0)",
+    },
+
     hide: {
       display: "none",
     },
@@ -50,9 +64,9 @@ const Labels = ({
         style={{ ...styles.value, ...(!labelBottom && styles.bottomMargin) }}
       >
         <code>
-          <span>{prependToValue}</span>
-          <span>{value}</span>
-          <span>{appendToValue}</span>
+          <span style={styles.prepended}>{prependToValue}</span>
+          {value}
+          <span style={styles.appended}>{appendToValue}</span>
         </code>
       </div>
       {labelBottom && <div style={{ fontSize: labelFontSize }}>{label}</div>}

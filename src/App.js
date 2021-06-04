@@ -157,7 +157,7 @@ import { ReactComponent as EmojiIcon } from './assets/emoji.svg';
     <EmojiIcon x="9" y="9" width="18px" height="18px" />
 </CircularSlider>`}
       </pre>
-      {/* <h3 className={styles.h3}>
+      <h3 className={styles.h3}>
         A flat line cap with the track size smaller than the progress track size
         and a smiley knob:
       </h3>
@@ -204,21 +204,21 @@ import { ReactComponent as EmojiIcon } from './assets/emoji.svg';
           progressSize={8}
           trackColor="#eeeeee"
           trackSize={4}
-          // data={(() => {
-          //   const data = new Array(scale.max + 1)
-          //     .fill("")
-          //     .map((a, i) => (i < scale.min ? null : i + "$"))
-          //     .filter(Boolean);
-          //   return data;
-          // })()}
-          min={scale.min}
-          max={scale.max}
-          step={10}
+          data={(() => {
+            const data = new Array(scale.max + 1)
+              .fill("")
+              .map((a, i) => (i < scale.min ? null : i + "$"))
+              .filter(Boolean);
+            return data;
+          })()}
+          // min={scale.min}
+          // max={scale.max}
+          // step={10}
         >
           <EmojiIcon x="9" y="9" width="18px" height="18px" />
         </CircularSlider>
       </div>
-      <pre className={styles.pre}></pre> */}
+      <pre className={styles.pre}></pre>
     </div>
   );
 };

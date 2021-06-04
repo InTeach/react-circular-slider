@@ -240,7 +240,7 @@ const CircularSlider = ({
     });
 
     // eslint-disable-next-line
-  }, [max, min, step]);
+  }, [max, min, step, data.length]);
 
   // Set knob position
   useEffect(() => {
