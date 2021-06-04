@@ -5,6 +5,7 @@ import { ReactComponent as EmojiIcon } from "./assets/emoji.svg";
 
 const App = () => {
   const [scale, setScale] = useState({ min: 0, max: 360 });
+  const [trailing, setTrailing] = useState("");
   const styles = {
     wrapper: {
       margin: "2rem",
@@ -54,16 +55,6 @@ const App = () => {
         An initial value of 20, "$" prepended and "K" appended to the value with
         a custom knob icon and the label on the bottom:
       </h3>
-      <div>
-        <input
-          type="text"
-          onChange={(e) => {
-            const val = parseInt(e.target.value);
-            if (isNaN(val)) return;
-            setScale({ ...scale, max: val });
-          }}
-        ></input>
-      </div>
       <div className={styles.slider}>
         <CircularSlider
           label="savings account"
@@ -161,7 +152,24 @@ import { ReactComponent as EmojiIcon } from './assets/emoji.svg';
         A flat line cap with the track size smaller than the progress track size
         and a smiley knob:
       </h3>
-
+      <div
+        style={{
+          display: "flex",
+          margin: "2rem",
+          alignItems: "center",
+          justifyContent: "space-evenly",
+        }}
+      >
+        <label type="text" htmlFor="trail">
+          {"Trailing"}
+        </label>
+        <label type="text" htmlFor="min">
+          {"Min"}
+        </label>
+        <label type="text" htmlFor="max">
+          {"Max"}
+        </label>
+      </div>
       <div
         style={{
           display: "flex",
@@ -171,8 +179,16 @@ import { ReactComponent as EmojiIcon } from './assets/emoji.svg';
         }}
       >
         <input
+          id="trail"
           type="text"
-          label="min"
+          onChange={(e) => {
+            const val = e.target.value;
+            setTrailing(val);
+          }}
+        ></input>
+        <input
+          type="text"
+          id="min"
           onChange={(e) => {
             const val = parseInt(e.target.value);
             if (isNaN(val)) return;
@@ -181,7 +197,7 @@ import { ReactComponent as EmojiIcon } from './assets/emoji.svg';
         />
         <input
           type="text"
-          label="max"
+          id="max"
           onChange={(e) => {
             const val = parseInt(e.target.value);
             if (isNaN(val)) return;
@@ -207,13 +223,10 @@ import { ReactComponent as EmojiIcon } from './assets/emoji.svg';
           data={(() => {
             const data = new Array(scale.max + 1)
               .fill("")
-              .map((a, i) => (i < scale.min ? null : i + "$"))
+              .map((a, i) => (i < scale.min ? null : i + trailing))
               .filter(Boolean);
             return data;
           })()}
-          // min={scale.min}
-          // max={scale.max}
-          // step={10}
         >
           <EmojiIcon x="9" y="9" width="18px" height="18px" />
         </CircularSlider>

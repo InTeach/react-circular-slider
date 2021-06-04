@@ -277,6 +277,7 @@ const CircularSlider = ({
     state.dashFullArray,
     state.knobPosition,
     state.data.length,
+    state.data[0],
     dataIndex,
     direction,
   ]);
