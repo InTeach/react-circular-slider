@@ -231,6 +231,7 @@ const CircularSlider = ({
 
   // Set circle range
   useEffect(() => {
+    console.log("slider", min, max, step);
     dispatch({
       type: "updateCicleData",
       payload: {

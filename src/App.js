@@ -4,7 +4,7 @@ import { ReactComponent as DragIcon } from "./assets/drag.svg";
 import { ReactComponent as EmojiIcon } from "./assets/emoji.svg";
 
 const App = () => {
-  // const [scale, setScale] = useState({ min: 0, max: 360 });
+  const [scale, setScale] = useState({ min: 0, max: 360 });
   const styles = {
     wrapper: {
       margin: "2rem",
@@ -54,11 +54,21 @@ const App = () => {
         An initial value of 20, "$" prepended and "K" appended to the value with
         a custom knob icon and the label on the bottom:
       </h3>
+      <div>
+        <input
+          type="text"
+          onChange={(e) => {
+            const val = parseInt(e.target.value);
+            if (isNaN(val)) return;
+            setScale({ ...scale, max: val });
+          }}
+        ></input>
+      </div>
       <div className={styles.slider}>
         <CircularSlider
           label="savings account"
           min={0}
-          max={100}
+          max={scale.max}
           dataIndex={20}
           prependToValue="$"
           appendToValue="K"

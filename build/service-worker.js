@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/react-circular-slider/precache-manifest.0a3a7a6004fa9cc291e121a904745c63.js"
+  "/react-circular-slider/precache-manifest.17f487f60e17ab7e68d023f2533f1833.js"
 );
 
 self.addEventListener('message', (event) => {
