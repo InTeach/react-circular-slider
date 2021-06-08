@@ -25,9 +25,9 @@ const getRadians = (degrees) => {
   return (degrees * Math.PI) / 180;
 };
 
-const generateRange = (min, max) => {
+const generateRange = (min, max, step) => {
   let rangeOfNumbers = [];
-  for (let i = min; i <= max; i++) {
+  for (let i = min; i <= max; i += step) {
     rangeOfNumbers.push(i);
   }
   return rangeOfNumbers;
@@ -52,6 +52,7 @@ const CircularSlider = ({
   direction = 1,
   min = 0,
   max = 360,
+  step = 1,
   knobColor = "#4e63ea",
   knobPosition = "top",
   labelColor = "#272b77",
@@ -219,16 +220,26 @@ const CircularSlider = ({
       type: "init",
       payload: {
         mounted: true,
-        data: state.data.length
-          ? [...state.data]
-          : [...generateRange(min, max)],
         dashFullArray: svgFullPath.current.getTotalLength
           ? svgFullPath.current.getTotalLength()
           : 0,
       },
     });
+
     // eslint-disable-next-line
-  }, [max, min]);
+  }, []);
+
+  // Set circle range
+  useEffect(() => {
+    dispatch({
+      type: "updateCicleData",
+      payload: {
+        data: data.length ? [...data] : [...generateRange(min, max, step)],
+      },
+    });
+
+    // eslint-disable-next-line
+  }, [max, min, step, data.length, data[0]]);
 
   // Set knob position
   useEffect(() => {
@@ -266,6 +277,7 @@ const CircularSlider = ({
     state.dashFullArray,
     state.knobPosition,
     state.data.length,
+    state.data[0],
     dataIndex,
     direction,
   ]);
@@ -276,7 +288,8 @@ const CircularSlider = ({
   return (
     <div
       style={{ ...styles.circularSlider, ...(state.mounted && styles.mounted) }}
-      ref={circularSlider}>
+      ref={circularSlider}
+    >
       <Svg
         width={width}
         label={label.split(" ").join("")}
@@ -299,7 +312,8 @@ const CircularSlider = ({
           knobColor={knobColor}
           trackSize={trackSize}
           hideKnob={hideKnob}
-          onMouseDown={onMouseDown}>
+          onMouseDown={onMouseDown}
+        >
           {children}
         </Knob>
       )}
@@ -327,6 +341,7 @@ CircularSlider.propTypes = {
   direction: PropTypes.number,
   min: PropTypes.number,
   max: PropTypes.number,
+  step: PropTypes.number,
   knobColor: PropTypes.string,
   knobPosition: PropTypes.string,
   hideKnob: PropTypes.bool,

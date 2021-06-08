@@ -61,7 +61,8 @@ const Labels = ({
     <div style={{ ...styles.labels, ...(hideLabelValue && styles.hide) }}>
       {labelBottom || <div style={{ fontSize: labelFontSize }}>{label}</div>}
       <div
-        style={{ ...styles.value, ...(!labelBottom && styles.bottomMargin) }}>
+        style={{ ...styles.value, ...(!labelBottom && styles.bottomMargin) }}
+      >
         <code>
           <span style={styles.prepended}>{prependToValue}</span>
           {value}
