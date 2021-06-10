@@ -218,13 +218,13 @@ import { ReactComponent as EmojiIcon } from './assets/emoji.svg';
           progressColorFrom="#ff8500"
           progressColorTo="#a15400"
           progressSize={8}
-          trackColor="#eeeeee"
+          trackColor="#eeefee"
           trackSize={4}
           data={(() => {
-            const data = new Array(scale.max + 1)
-              .fill("")
-              .map((a, i) => (i < scale.min ? null : i + trailing))
-              .filter(Boolean);
+            const data = [];
+            for (let i = scale.min; i <= scale.max; i += 1) {
+              data.push(`${i}${trailing}`);
+            }
             return data;
           })()}
         >

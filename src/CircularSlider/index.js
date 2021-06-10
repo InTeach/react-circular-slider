@@ -231,6 +231,7 @@ const CircularSlider = ({
 
   // Set circle range
   useEffect(() => {
+    console.log(data);
     dispatch({
       type: "updateCicleData",
       payload: {
